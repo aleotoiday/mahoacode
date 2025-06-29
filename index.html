@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>JS Obfuscator </title>
+  <style>
+    body {
+      background-color: #111;
+      color: #eee;
+      font-family: 'Courier New', monospace;
+      padding: 20px;
+    }
+    textarea {
+      width: 100%;
+      height: 200px;
+      background: #000;
+      color: #0f0;
+      border: 1px solid #333;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+    button {
+      margin: 10px 5px 10px 0;
+      padding: 10px 15px;
+      background-color: #222;
+      color: #eee;
+      border: 1px solid #555;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #333;
+    }
+    label {
+      display: inline-block;
+      margin-right: 10px;
+    }
+    .footer {
+      margin-top: 20px;
+      font-size: 12px;
+      color: #666;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h2>// JS Obfuscator by <span style="color:#0f0">MayyxAleoo</span></h2>
+  <label><input type="checkbox" id="addMeta" checked> Gắn tác giả + Trap</label>
+  <br />
+  <textarea id="input" placeholder="// Nhập code gốc ở đây..."></textarea>
+  <br />
+  <button onclick="obfuscate()">Mã hoá</button>
+  <button onclick="copyOutput()">Copy mã</button>
+  <br />
+  <textarea id="output" placeholder="// Kết quả mã hoá sẽ hiện ở đây..." readonly></textarea>
+  <div class="footer">Made With By Mây x Aleoo</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/javascript-obfuscator/dist/index.browser.js"></script>
+  <script>
+    function obfuscate() {
+      const input = document.getElementById("input").value;
+      const addMeta = document.getElementById("addMeta").checked;
+      let source = input;
+
+      if (addMeta) {
+        source =
+          "// Author: aleotoidayy\nvar __encode = 'aleotoidayy';\n" + source;
+      }
+
+      const obfuscationResult = JavaScriptObfuscator.obfuscate(source, {
+        compact: true,
+        controlFlowFlattening: true,
+        controlFlowFlatteningThreshold: 1,
+        deadCodeInjection: true,
+        deadCodeInjectionThreshold: 0.4,
+        stringArray: true,
+        stringArrayEncoding: ['base64'],
+        stringArrayThreshold: 1,
+        renameGlobals: true,
+        selfDefending: true,
+        splitStrings: true,
+        splitStringsChunkLength: 5,
+        transformObjectKeys: true,
+        unicodeEscapeSequence: false
+      });
+
+      document.getElementById("output").value = obfuscationResult.getObfuscatedCode();
+    }
+
+    function copyOutput() {
+      const output = document.getElementById("output");
+      output.select();
+      document.execCommand("copy");
+    }
+  </script>
+</body>
+</html>
